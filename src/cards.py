@@ -1,5 +1,5 @@
 """
-This file defines the structure and behaviour of cards
+This file defines the structure of cards
 """
 
 from enum import Enum
@@ -36,7 +36,7 @@ class Card:
     def __init__(self, suit: Suit, rank: Rank):
         self.suit = suit
         self.rank = rank
-    
+
     # Method to get the svg data representing this card
     def get_image(self) -> str:
         # Calculate the suit component
@@ -92,5 +92,8 @@ class Card:
         f.close()
         # Return the data
         return data
-            
+
+    # Make printing cards nice and easy for debugging purposes
+    def __str__(self):
+        return f"{self.rank} of {self.suit}"
             
