@@ -1,3 +1,5 @@
+<img width="150px" src="https://raw.githubusercontent.com/curlpipe/crazy8s/refs/heads/main/assets/logo.gif"></img>
+
 # Crazy Eights Card Game
 
 A fun card game, see below for installation instructions and how to play
