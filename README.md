@@ -34,7 +34,7 @@ Players take turns.
 
 During each turn, the player must do the following:
 
-Choose a card from their deck that fits one or more of following criteria:
+Choose a card from their deck that fits one or more of the following criteria:
 
 - The selected card matches the suit of the card on the top of the discard pile
 - The selected card matches the rank of the card on the top of the discard pile
@@ -56,7 +56,7 @@ There are several cards that exhibit specific behaviour, these are as follows:
 
 ### Objective
 
-The player who wins is the one who is first to get rid of their entire deck.
+The player who wins is the one who is first to get rid of their cards.
 
 ## Credits
 
