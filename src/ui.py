@@ -271,6 +271,7 @@ class UI:
 def ask_user_if_jokers(yes_jokers, no_jokers):
     root = Tk()
     root.title("Crazy Eights: Jokers or no Jokers")
+    root.config(bg="#033500")
 
     def handle_event(jokers: bool):
         root.destroy()
@@ -279,12 +280,12 @@ def ask_user_if_jokers(yes_jokers, no_jokers):
         else:
             no_jokers()
 
-    question = Label(root, text="Welcome to the Crazy Eights card game\nDo you want to add jokers to the pack?")
+    question = Label(root, text="Welcome to the Crazy Eights card game\nDo you want to add jokers to the pack?", bg="#033500", fg="white", font=("Verdana", 30))
     question.pack()
 
-    positive = Button(root, text="Yes, add in jokers", pady=10, command=lambda: handle_event(True))
+    positive = Button(root, text="Yes, add in jokers", pady=10, command=lambda: handle_event(True), font=("Verdana", 20))
     positive.pack()
-    negative = Button(root, text="No, do not add in jokers", pady=10, command=lambda: handle_event(False))
+    negative = Button(root, text="No, do not add in jokers", pady=10, command=lambda: handle_event(False), font=("Verdana", 20))
     negative.pack()
 
     root.mainloop()
