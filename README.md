@@ -6,6 +6,8 @@ A fun card game, see below for installation instructions and how to play
 
 More information: [here](https://en.wikipedia.org/wiki/Crazy_Eights)
 
+This game has automated tests, install and run `pytest` to ensure everything is working as intended
+
 ## Installation
 
 This game is written in Python, and will require a minimum version of 3.10 in order to work.

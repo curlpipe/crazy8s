@@ -1,0 +1,12 @@
+- [X] Write tests for deck
+- [ ] Set-up github CI
+- [ ] Create a game class with methods
+    - [ ] Game initialisation
+    - [ ] Allow 2 players to take turns playing valid cards from their deck
+    - [ ] Have the computer play their turns
+    - [ ] Write tests for the game
+- [ ] GUI
+    - [ ] Render the stock and discard piles
+    - [ ] Render our hand that we have
+    - [ ] Start page that lets you add or remove jokers from the deck
+    - [ ] Animations / Nicer visuals

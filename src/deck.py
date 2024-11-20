@@ -40,3 +40,15 @@ class Deck:
         # No cards are valid, represent this state as None
         return None
 
+    # Allow comparison of decks
+    def __eq__(self, other):
+        # Discrepancy based on length
+        if len(self.cards) != len(other.cards):
+            return False
+        # Discrepancy based on contents
+        for ours, theirs in zip(self.cards, other.cards):
+            if ours != theirs:
+                return False
+        # Passed all checks, these decks are identical
+        return True
+
