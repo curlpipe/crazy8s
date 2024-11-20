@@ -57,4 +57,8 @@ def test_decks():
     assert hand.card_to_play(deck) == 1
     hand = Deck([Card(Suit.HEARTS, Rank.KING), Card(Suit.CLUBS, Rank.FOUR)])
     assert hand.card_to_play(deck) == None
+    # Test shuffling
+    deck = Deck.full_deck(True)
+    deck.shuffle()
+    assert not deck == Deck.full_deck(True)
 

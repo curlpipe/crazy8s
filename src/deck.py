@@ -1,14 +1,38 @@
 """
-This defines decks, a list of cards, used to represent player's hands and the stock and discard piles
+This defines decks, a list of cards, used to represent player's hands and the stock / discard piles
 """
 
 from cards import Card, Suit, Rank
+import random
 
 # The deck class
 class Deck:
     # By default, a deck is empty unless otherwise provided through arguments
     def __init__(self, cards=[]):
         self.cards = cards
+
+    # Generate a full deck
+    def full_deck(jokers: bool):
+        deck = Deck([])
+        # Add in jokers if applicable
+        if jokers:
+            deck.push(Card(Suit.JOKER, Rank.JOKER))
+            deck.push(Card(Suit.JOKER, Rank.JOKER))
+        # Add other cards
+        suits = [Suit.HEARTS, Suit.SPADES, Suit.DIAMONDS, Suit.CLUBS]
+        ranks = [
+            Rank.ACE, Rank.TWO, Rank.THREE, Rank.FOUR, Rank.FIVE, Rank.SIX, Rank.SEVEN,
+            Rank.EIGHT, Rank.NINE, Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING
+        ]
+        for suit in suits:
+            for rank in ranks:
+                deck.push(Card(suit, rank))
+        # Ready to go
+        return deck
+
+    # Shuffle a deck
+    def shuffle(self):
+        random.shuffle(self.cards)
 
     # Method to add a card
     def push(self, card_to_add: Card):
@@ -25,7 +49,7 @@ class Deck:
     # Assuming this is the discard pile, work out if a card can be added
     def can_add_to(self, card_to_check: Card) -> bool:
         top_card = self.peek()
-        # Check various conditions (not the most efficient implementation - but the code is clean)
+        # Check various conditions (not the most efficient - but the code is clean)
         is_eight = card_to_check.rank == Rank.EIGHT
         common_rank = card_to_check.rank == top_card.rank
         common_suit = card_to_check.suit == top_card.suit
