@@ -6,12 +6,12 @@
     - [X] Have the computer play their turns
     - [X] Support special cards
     - [X] Move discard to stock if stock is empty
-- [ ] GUI
+- [X] GUI
     - [X] Render the stock and discard piles
     - [X] Render our hand that we have
     - [X] Implement very basic game play
     - [X] Allow for special cards
-    - [ ] Start page that lets you add or remove jokers from the deck
+    - [X] Start page that lets you add or remove jokers from the deck
     - [X] Option to replay
     - [X] Destroy legacy CLI
 - [X] More detailed README
