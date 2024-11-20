@@ -16,7 +16,7 @@ class UI:
     def __init__(self, game: Game):
         self.game = game
         self.root = Tk()
-        self.root.geometry("800x600")
+        self.root.geometry("900x700")
         self.root.title("Crazy Eights!")
         self.root.config(bg="#033500")
 
@@ -60,7 +60,7 @@ class UI:
         try:
             mainloop()
         except KeyboardInterrupt:
-            print("Goodbye")
+            pass
 
     def quit(self):
         self.root.destroy()
@@ -148,7 +148,7 @@ class UI:
                 else:
                     self.next_player()
             else:
-                print("Invalid choice! Try again")
+                self.state.config(text="Card doesn't match, please choose another or pick up")
 
     def next_player(self):
         self.game.next_player()
@@ -221,6 +221,7 @@ class UI:
 
     # Make a suit selection
     def do_suit_selection(self, event, suit: Suit):
+        self.state.config(text="Computer's Turn")
         # Set the suit
         self.game.discard.cards[len(self.game.discard.cards) - 1].suit = suit
         self.render_discard()

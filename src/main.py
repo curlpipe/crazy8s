@@ -12,7 +12,7 @@ from ui import UI
 # Create a game
 game = Game()
 game.set_up()
-# game.play_text()
 
+# Attach a UI and get playing
 ui = UI(game)
 ui.run()

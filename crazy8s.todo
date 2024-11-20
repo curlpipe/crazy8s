@@ -12,7 +12,7 @@
     - [X] Implement very basic game play
     - [X] Allow for special cards
     - [ ] Start page that lets you add or remove jokers from the deck
-    - [ ] Animations / Nicer visuals
+    - [ ] Option to replay
     - [ ] Destroy legacy CLI
 - [ ] More detailed README
 - [ ] Better comments
