@@ -46,6 +46,10 @@ class Game:
     def play_text(self):
         # Players take turns
         while not self.finished():
+            # Decant the bottom of the discard pile onto the stock pile
+            top = self.discard.pop()
+            for card in self.discard.cards: self.stock.cards.insert(0, card)
+            self.discard.cards = [top]
             # Decide whether human or computer should play
             if self.current_player == 0:
                 could_play = self.player_turn()

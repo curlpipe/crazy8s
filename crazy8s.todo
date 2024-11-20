@@ -1,11 +1,11 @@
 - [X] Write tests for deck
 - [X] Set-up github CI
-- [ ] Create a game class with methods
+- [X] Create a game class with methods
     - [X] Game initialisation
     - [X] Allow 2 players to take turns playing valid cards from their deck
     - [X] Have the computer play their turns
     - [X] Support special cards
-    - [ ] Move discard to stock if stock is empty
+    - [X] Move discard to stock if stock is empty
 - [ ] GUI
     - [ ] Render the stock and discard piles
     - [ ] Render our hand that we have
