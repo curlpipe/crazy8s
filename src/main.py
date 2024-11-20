@@ -10,3 +10,4 @@ from game import Game
 
 # Create a game
 game = Game()
+game.set_up()

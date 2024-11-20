@@ -61,4 +61,7 @@ def test_decks():
     deck = Deck.full_deck(True)
     deck.shuffle()
     assert not deck == Deck.full_deck(True)
+    # Test popping from deck
+    deck = Deck.full_deck(True)
+    assert deck.pop() == Card(Suit.CLUBS, Rank.KING)
 

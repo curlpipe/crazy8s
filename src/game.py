@@ -16,3 +16,13 @@ class Game:
         # Set up the discard and stock piles
         self.stock = Deck.full_deck(True)
         self.discard = Deck([])
+
+    def set_up(self):
+        # Shuffle the deck
+        self.stock.shuffle()
+        # Deal each player 5 cards
+        for deck in self.decks:
+            for _ in range(5):
+                deck.push(self.stock.pop())
+        # Create the discard pile
+        self.discard.push(self.stock.pop())

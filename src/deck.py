@@ -42,6 +42,10 @@ class Deck:
     def remove(self, idx: int):
         del self.cards[idx]
 
+    # Method to remove a card from the deck and return it
+    def pop(self):
+        return self.cards.pop()
+
     # Method to get the card at the top of the deck
     def peek(self) -> Card:
         return self.cards[len(self.cards) - 1]
@@ -63,6 +67,13 @@ class Deck:
                 return index
         # No cards are valid, represent this state as None
         return None
+
+    # Nice printing of decks
+    def __str__(self):
+        result = ""
+        for card in self.cards:
+            result += f"[{card}]\n"
+        return result
 
     # Allow comparison of decks
     def __eq__(self, other):
