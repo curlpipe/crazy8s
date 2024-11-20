@@ -13,8 +13,9 @@ import os
 # UI class
 class UI:
     # UI will contain the game
-    def __init__(self):
-        self.game = Game(True)
+    def __init__(self, jokers: bool):
+        self.jokers = jokers
+        self.game = Game(self.jokers)
         self.game.set_up()
         self.root = Tk()
         self.root.geometry("900x700")
@@ -252,7 +253,7 @@ class UI:
         self.victory_message.destroy()
         self.just_restarted = True
         self.paused = False
-        self.game = Game(True)
+        self.game = Game(self.jokers)
         self.game.set_up()
         self.state.config(text="Your Turn")
         self.render_opponent()
@@ -265,3 +266,25 @@ class UI:
             self.spade_button.destroy()
         except:
             pass
+
+# Function to run code depending on whether or not the user wishes to use jokers
+def ask_user_if_jokers(yes_jokers, no_jokers):
+    root = Tk()
+    root.title("Crazy Eights: Jokers or no Jokers")
+
+    def handle_event(jokers: bool):
+        root.destroy()
+        if jokers:
+            yes_jokers()
+        else:
+            no_jokers()
+
+    question = Label(root, text="Welcome to the Crazy Eights card game\nDo you want to add jokers to the pack?")
+    question.pack()
+
+    positive = Button(root, text="Yes, add in jokers", pady=10, command=lambda: handle_event(True))
+    positive.pack()
+    negative = Button(root, text="No, do not add in jokers", pady=10, command=lambda: handle_event(False))
+    negative.pack()
+
+    root.mainloop()
