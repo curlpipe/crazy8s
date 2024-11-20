@@ -4,6 +4,7 @@ Automated tests for the card game to squash out any bugs and provide peace of mi
 
 from cards import Card, Suit, Rank
 from deck import Deck
+import os
 
 # Test cards
 def test_cards():
@@ -11,12 +12,18 @@ def test_cards():
     assert Suit.HEARTS == Suit.HEARTS
     # Test images are retrieved correctly
     card = Card(Suit.DIAMONDS, Rank.ACE)
-    f = open("../assets/AD.svg", "r")
+    path = "assets/AD.svg"
+    if "src" in os.getcwd():
+        path = "../" + path
+    f = open(path, "r")
     data = f.read()
     f.close()
     assert card.get_image() == data
     card = Card(Suit.JOKER, Rank.JOKER)
-    f = open("../assets/1J.svg", "r")
+    path = "assets/1J.svg"
+    if "src" in os.getcwd():
+        path = "../" + path
+    f = open(path, "r")
     data = f.read()
     f.close()
     assert card.get_image() == data
