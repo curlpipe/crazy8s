@@ -4,7 +4,7 @@ For handling the UI of the game
 
 from tkinter import *
 from PIL import Image, ImageTk
-from cards import Card
+from cards import Card, Suit, Rank
 from game import Game
 import random
 import time
@@ -19,10 +19,11 @@ class UI:
         self.root.geometry("800x600")
         self.root.title("Crazy Eights!")
         self.root.config(bg="#033500")
-        
 
         # Storage to prevent PhotoImages from being garbage collected
         self.storage = []
+
+        self.paused = False
 
         # Show exit button
         self.exit_button = Button(self.root, text="Exit", command=self.quit, font=("Verdana", 12))
@@ -44,6 +45,16 @@ class UI:
         self.players = []
         self.render_opponent()
         self.render_player()
+
+        # Load in images of suits (for suit picker)
+        self.suits = {}
+        for suit in ["heart", "diamond", "spade", "club"]:
+            if "src" in os.getcwd(): path = f"../assets/{suit}.png"
+            else: path = f"assets/{suit}.png"
+            image = Image.open(path)
+            image = image.resize((30, 30))
+            photo = ImageTk.PhotoImage(image)
+            self.suits[suit] = photo
 
     def run(self):
         try:
@@ -115,7 +126,7 @@ class UI:
             new_card = self.game.stock.pop()
             player_deck.push(new_card)
             self.render_player()
-        self.next_player()
+            self.next_player()
 
     def play_card(self, event, choice):
         if self.game.current_player == 0:
@@ -125,8 +136,10 @@ class UI:
             if valid:
                 choice = self.game.decks[0].remove(choice)
                 self.game.discard.push(choice)
+                self.handle_special_card(self.game.discard.peek())
                 self.render_discard()
                 self.render_player()
+                self.render_opponent()
                 if self.game.finished():
                     # Game over, player won!
                     self.victory_message = Label(self.root, text="You Won!", font=("Verdana", 60), bg="#033500", fg="white", padx=1000, pady=1000)
@@ -142,11 +155,22 @@ class UI:
         if self.game.current_player == 0:
             self.state.config(text="Your Turn")
         else:
-            self.state.config(text="Computer's Turn")
+            # Update turn display (if not paused)
+            if not self.paused:
+                self.state.config(text="Computer's Turn")
             # Handle computer's go (simulate thinking time)
             self.root.after(random.randint(2000, 3000), self.handle_computer)
+        # Refill the stock pile (to prevent running out)
+        top = self.game.discard.pop()
+        for card in self.game.discard.cards: self.game.stock.cards.insert(0, card)
+        self.game.discard.cards = [top]
 
     def handle_computer(self):
+        # Non-blocking way to wait until the game unpauses
+        if self.paused:
+            self.root.after(random.randint(2000, 3000), self.handle_computer)
+            return
+        # Handle the computer's go
         if self.game.computer_turn():
             self.game.handle_special_card_computer(self.game.discard.peek())
         self.render_opponent()
@@ -158,3 +182,55 @@ class UI:
             self.victory_message = Label(self.root, text="You Lost!", font=("Verdana", 60), bg="#033500", fg="white", padx=1000, pady=1000)
             self.victory_message.place(relx=0.5, rely=0.5, anchor="center")
             self.root.after(5000, self.quit)
+
+    # Handle special cards (player facing)
+    def handle_special_card(self, card: Card):
+        match card.rank:
+            case Rank.EIGHT:
+                # Handle 8 card
+                self.pick_suit()
+            case Rank.TWO:
+                # Handle 2 card
+                self.game.pickup_2()
+            case Rank.ACE:
+                # Handle ace card
+                self.game.skip_go()
+            case Rank.JOKER:
+                # Handle joker card
+                self.game.skip_go()
+
+    # Show the suit picker and return the selection
+    def pick_suit(self):
+        # Pause the gameplay for now
+        self.paused = True
+        # Show the new suit picker
+        self.heart_button = Label(self.root, image=self.suits["heart"])
+        self.club_button = Label(self.root, image=self.suits["club"])
+        self.diamond_button = Label(self.root, image=self.suits["diamond"])
+        self.spade_button = Label(self.root, image=self.suits["spade"])
+        self.heart_button.place(relx=0.35, rely=0.9, anchor="center")
+        self.club_button.place(relx=0.45, rely=0.9, anchor="center")
+        self.diamond_button.place(relx=0.55, rely=0.9, anchor="center")
+        self.spade_button.place(relx=0.65, rely=0.9, anchor="center")
+        self.heart_button.bind("<Button-1>", lambda event: self.do_suit_selection(event, Suit.HEARTS))
+        self.club_button.bind("<Button-1>", lambda event: self.do_suit_selection(event, Suit.CLUBS))
+        self.diamond_button.bind("<Button-1>", lambda event: self.do_suit_selection(event, Suit.DIAMONDS))
+        self.spade_button.bind("<Button-1>", lambda event: self.do_suit_selection(event, Suit.SPADES))
+        # Display message to player to pick a suit
+        self.state.config(text="Choose a suit")
+
+    # Make a suit selection
+    def do_suit_selection(self, event, suit: Suit):
+        # Set the suit
+        self.game.discard.cards[len(self.game.discard.cards) - 1].suit = suit
+        self.render_discard()
+        # Destroy any old suit picker
+        try:
+            self.heart_button.destroy()
+            self.club_button.destroy()
+            self.diamond_button.destroy()
+            self.spade_button.destroy()
+        except:
+            pass
+        # Unpause and continue the game
+        self.paused = False

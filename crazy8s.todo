@@ -10,8 +10,9 @@
     - [X] Render the stock and discard piles
     - [X] Render our hand that we have
     - [X] Implement very basic game play
-    - [ ] Allow for special cards
-    - [ ] Better opponent card selection
+    - [X] Allow for special cards
     - [ ] Start page that lets you add or remove jokers from the deck
     - [ ] Animations / Nicer visuals
+    - [ ] Destroy legacy CLI
 - [ ] More detailed README
+- [ ] Better comments
