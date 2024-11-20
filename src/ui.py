@@ -61,15 +61,18 @@ class UI:
             photo = ImageTk.PhotoImage(image)
             self.suits[suit] = photo
 
+    # Run the game and show the UI
     def run(self):
         try:
             mainloop()
         except KeyboardInterrupt:
             pass
 
+    # Exit the game
     def quit(self):
         self.root.destroy()
 
+    # Render a card at a certain location
     def show_card(self, card: Card, x: float, y: float) -> Label:
         image = Image.open(card.get_image_path() + ".png")
         image = image.resize((120, 168))
@@ -78,7 +81,8 @@ class UI:
         self.storage.append(photo)
         label.place(relx=x, rely=y, anchor="center")
         return label
-    
+
+    # Render the back of a card at a certain location
     def show_card_back(self, x: float, y: float) -> Label:
         if "src" in os.getcwd():
             path = "../assets/back.png"
@@ -92,6 +96,7 @@ class UI:
         label.place(relx=x, rely=y, anchor="center")
         return label
 
+    # Render the discard pile
     def render_discard(self):
         # Destroy the discard pile if possible
         try: self.discard_pile.destroy()
@@ -99,6 +104,7 @@ class UI:
         # Show the discard pile
         self.discard_pile = self.show_card(self.game.discard.peek(), 0.3333, 0.4)
 
+    # Render the hand of the opponent
     def render_opponent(self):
         # Destroy all of the opponents cards
         for image in self.opponent:
@@ -111,6 +117,7 @@ class UI:
         for i in range(card_number):
             self.opponent.append(self.show_card_back(0.2 + increment * i, 0.04))
 
+    # Render the player's hand
     def render_player(self):
         # Destroy all of the opponents cards
         for image in self.players:
@@ -125,6 +132,7 @@ class UI:
             card.bind("<Button-1>", lambda event, choice=i: self.play_card(event, choice))
             self.players.append(card)
 
+    # Handle the player wanting to pick up a card
     def pick_up(self, event):
         if self.game.current_player == 0:
             player_deck = self.game.decks[self.game.current_player]
@@ -133,6 +141,7 @@ class UI:
             self.render_player()
             self.next_player()
 
+    # Handle the player playing a card
     def play_card(self, event, choice):
         if self.game.current_player == 0:
             self.just_restarted = False
@@ -157,6 +166,7 @@ class UI:
             else:
                 self.state.config(text="Card doesn't match, please choose another or pick up")
 
+    # Move to the next player
     def next_player(self):
         self.game.next_player()
         if self.game.current_player == 0:
@@ -172,6 +182,7 @@ class UI:
         for card in self.game.discard.cards: self.game.stock.cards.insert(0, card)
         self.game.discard.cards = [top]
 
+    # Handle the computer's turn
     def handle_computer(self):
         # Non-blocking way to wait until the game unpauses
         if self.just_restarted:

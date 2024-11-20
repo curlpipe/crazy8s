@@ -1,5 +1,5 @@
 """
-Defines the structure of the game
+Defines the structure and behaviour of the game
 """
 
 from cards import Card, Suit, Rank

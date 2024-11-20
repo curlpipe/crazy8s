@@ -15,5 +15,5 @@
     - [X] Option to replay
     - [X] Destroy legacy CLI
 - [X] More detailed README
-- [ ] Better comments
-- [ ] Pylint
+- [X] Better comments
+- [X] Pylint
