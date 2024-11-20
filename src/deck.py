@@ -57,10 +57,11 @@ class Deck:
         top_card = self.peek()
         # Check various conditions (not the most efficient - but the code is clean)
         is_eight = card_to_check.rank == Rank.EIGHT
+        is_joker = card_to_check.rank == Rank.JOKER or top_card.rank == Rank.JOKER
         common_rank = card_to_check.rank == top_card.rank
         common_suit = card_to_check.suit == top_card.suit
         # Work out if any condition is met
-        return is_eight or common_rank or common_suit
+        return is_eight or is_joker or common_rank or common_suit
 
     # Assuming this is a player's hand, get the index of a valid card to play
     def card_to_play(self, discard_pile) -> int:

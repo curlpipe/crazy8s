@@ -13,8 +13,9 @@ import os
 # UI class
 class UI:
     # UI will contain the game
-    def __init__(self, game: Game):
-        self.game = game
+    def __init__(self):
+        self.game = Game(True)
+        self.game.set_up()
         self.root = Tk()
         self.root.geometry("900x700")
         self.root.title("Crazy Eights!")
@@ -23,11 +24,14 @@ class UI:
         # Storage to prevent PhotoImages from being garbage collected
         self.storage = []
 
+        self.just_restarted = False
         self.paused = False
 
-        # Show exit button
-        self.exit_button = Button(self.root, text="Exit", command=self.quit, font=("Verdana", 12))
+        # Show exit and new game buttons
+        self.exit_button = Button(self.root, text="Exit", command=self.quit, font=("Verdana", 12), width=5)
         self.exit_button.place(relx=0.01, rely=0.01)
+        self.new_game_button = Button(self.root, text="New\nGame", command=self.new_game, font=("Verdana", 12), width=5)
+        self.new_game_button.place(relx=0.01, rely=0.07)
         
         # Show game state
         self.state = Label(self.root, text=f"Your Turn!", fg="white", bg="#033500", font=("Verdana", 20), pady=10)
@@ -130,6 +134,7 @@ class UI:
 
     def play_card(self, event, choice):
         if self.game.current_player == 0:
+            self.just_restarted = False
             player_deck = self.game.decks[0]
             valid_range = choice >= 0 and choice < len(player_deck.cards)
             valid = valid_range and self.game.discard.can_add_to(player_deck.cards[choice])
@@ -144,7 +149,8 @@ class UI:
                     # Game over, player won!
                     self.victory_message = Label(self.root, text="You Won!", font=("Verdana", 60), bg="#033500", fg="white", padx=1000, pady=1000)
                     self.victory_message.place(relx=0.5, rely=0.5, anchor="center")
-                    self.root.after(5000, self.quit)
+                    self.exit_button.lift()
+                    self.new_game_button.lift()
                 else:
                     self.next_player()
             else:
@@ -167,6 +173,10 @@ class UI:
 
     def handle_computer(self):
         # Non-blocking way to wait until the game unpauses
+        if self.just_restarted:
+            self.just_restarted = False
+            self.paused = False
+            return
         if self.paused:
             self.root.after(random.randint(2000, 3000), self.handle_computer)
             return
@@ -181,7 +191,8 @@ class UI:
             # Game over, computer won!
             self.victory_message = Label(self.root, text="You Lost!", font=("Verdana", 60), bg="#033500", fg="white", padx=1000, pady=1000)
             self.victory_message.place(relx=0.5, rely=0.5, anchor="center")
-            self.root.after(5000, self.quit)
+            self.exit_button.lift()
+            self.new_game_button.lift()
 
     # Handle special cards (player facing)
     def handle_special_card(self, card: Card):
@@ -235,3 +246,22 @@ class UI:
             pass
         # Unpause and continue the game
         self.paused = False
+
+    # Replay the game
+    def new_game(self):
+        self.victory_message.destroy()
+        self.just_restarted = True
+        self.paused = False
+        self.game = Game(True)
+        self.game.set_up()
+        self.state.config(text="Your Turn")
+        self.render_opponent()
+        self.render_player()
+        self.render_discard()
+        try:
+            self.heart_button.destroy()
+            self.club_button.destroy()
+            self.diamond_button.destroy()
+            self.spade_button.destroy()
+        except:
+            pass

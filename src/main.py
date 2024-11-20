@@ -9,10 +9,6 @@ from deck import Deck
 from game import Game
 from ui import UI
 
-# Create a game
-game = Game()
-game.set_up()
-
 # Attach a UI and get playing
-ui = UI(game)
+ui = UI()
 ui.run()

@@ -50,8 +50,8 @@ def test_decks():
     assert deck.can_add_to(Card(Suit.DIAMONDS, Rank.TEN)) # Yes, based on rank
     assert deck.can_add_to(Card(Suit.SPADES, Rank.EIGHT)) # Yes, card is an eight
     assert deck.can_add_to(Card(Suit.DIAMONDS, Rank.EIGHT)) # Yes, card is an eight
+    assert deck.can_add_to(Card(Suit.JOKER, Rank.JOKER)) # Yes, card is a joker
     assert not deck.can_add_to(Card(Suit.CLUBS, Rank.THREE)) # No, not eight, no matches of rank or suit
-    assert not deck.can_add_to(Card(Suit.JOKER, Rank.JOKER)) # No, not eight, no matches of rank or suit
     assert not deck.can_add_to(Card(Suit.HEARTS, Rank.FIVE)) # No, not eight, no matches of rank or suit
     # Test selection of valid cards to play
     hand = Deck([Card(Suit.HEARTS, Rank.KING), Card(Suit.CLUBS, Rank.TEN)])
@@ -67,7 +67,7 @@ def test_decks():
     assert deck.pop() == Card(Suit.CLUBS, Rank.KING)
 
 def test_game():
-    game = Game()
+    game = Game(False)
     # Test finishing condition
     assert game.finished()
     # Test setting up

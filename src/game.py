@@ -7,7 +7,7 @@ from deck import Deck
 
 # The game class
 class Game:
-    def __init__(self):
+    def __init__(self, jokers: bool):
         # Games will default to having two players (for now)
         self.current_player = 0
         # The deck at index 0 is the human's deck
@@ -16,7 +16,7 @@ class Game:
             Deck([]),
         ]
         # Set up the discard and stock piles
-        self.stock = Deck.full_deck(False)
+        self.stock = Deck.full_deck(jokers)
         self.discard = Deck([])
 
     # Set up the game

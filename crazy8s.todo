@@ -12,7 +12,8 @@
     - [X] Implement very basic game play
     - [X] Allow for special cards
     - [ ] Start page that lets you add or remove jokers from the deck
-    - [ ] Option to replay
-    - [ ] Destroy legacy CLI
-- [ ] More detailed README
+    - [X] Option to replay
+    - [X] Destroy legacy CLI
+- [X] More detailed README
 - [ ] Better comments
+- [ ] Pylint
