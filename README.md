@@ -2,11 +2,13 @@
 
 # Crazy Eights Card Game
 
-A fun card game, see below for installation instructions and how to play
+A fun card game, see below for installation instructions and how to play.
 
-More information: [here](https://en.wikipedia.org/wiki/Crazy_Eights)
+You will play against the computer in an attempt to try and win the game.
 
 This game has automated tests, install and run `pytest` to ensure everything is working as intended
+
+More information: [here](https://en.wikipedia.org/wiki/Crazy_Eights), note that my implementation is a slight variation on the original, but similar nonetheless.
 
 ## Installation
 
@@ -41,6 +43,7 @@ Choose a card from their deck that fits one or more of the following criteria:
 - The selected card matches the suit of the card on the top of the discard pile
 - The selected card matches the rank of the card on the top of the discard pile
 - The card is an 8
+- The card is a Joker
 
 So, say you have a 2 of clubs on the top of the discard pile, you may play a card that is either a 2, 8 or club.
 
