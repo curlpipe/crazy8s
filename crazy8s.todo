@@ -2,9 +2,9 @@
 - [X] Set-up github CI
 - [ ] Create a game class with methods
     - [X] Game initialisation
-    - [ ] Allow 2 players to take turns playing valid cards from their deck
+    - [X] Allow 2 players to take turns playing valid cards from their deck
     - [ ] Have the computer play their turns
-    - [ ] Write tests for the game
+    - [ ] Move discard to stock if stock is empty
 - [ ] GUI
     - [ ] Render the stock and discard piles
     - [ ] Render our hand that we have

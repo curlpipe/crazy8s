@@ -46,7 +46,7 @@ So, say you have a 2 of clubs on the top of the discard pile, you may play a car
 
 Once the card is placed, the player finishes their turn.
 
-*If the player has no valid cards they can play*: they must pick up 2 cards from the stock pile and then finish their turn.
+*If the player has no valid cards they can play*: they must pick up 1 card from the stock pile and then finish their turn.
 
 ### Special Cards
 

@@ -39,8 +39,10 @@ class Deck:
         self.cards.append(card_to_add)
 
     # Method to remove a card from the deck
-    def remove(self, idx: int):
+    def remove(self, idx: int) -> Card:
+        card = self.cards[idx]
         del self.cards[idx]
+        return card
 
     # Method to remove a card from the deck and return it
     def pop(self):
@@ -72,7 +74,7 @@ class Deck:
     def __str__(self):
         result = ""
         for card in self.cards:
-            result += f"[{card}]\n"
+            result += f"[{card}] "
         return result
 
     # Allow comparison of decks

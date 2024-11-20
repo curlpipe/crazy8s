@@ -4,6 +4,7 @@ Automated tests for the card game to squash out any bugs and provide peace of mi
 
 from cards import Card, Suit, Rank
 from deck import Deck
+from game import Game
 import os
 
 # Test cards
@@ -65,3 +66,15 @@ def test_decks():
     deck = Deck.full_deck(True)
     assert deck.pop() == Card(Suit.CLUBS, Rank.KING)
 
+def test_game():
+    game = Game()
+    # Test finishing condition
+    assert game.finished()
+    # Test setting up
+    game.set_up()
+    assert len(game.decks[0].cards) == 5
+    assert len(game.decks[1].cards) == 5
+    assert len(game.discard.cards) == 1
+    assert len(game.stock.cards) == 41
+    # Test finishing condition
+    assert not game.finished()

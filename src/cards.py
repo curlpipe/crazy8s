@@ -95,7 +95,7 @@ class Card:
 
     # Make printing cards nice and easy for debugging purposes
     def __str__(self):
-        return f"{self.rank} of {self.suit}"
+        return f"{str(self.rank)[5:]} of {str(self.suit)[5:]}"
 
     # Allow comparison of cards
     def __eq__(self, other):
