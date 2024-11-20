@@ -2,12 +2,14 @@
 Defines the structure of the game
 """
 
+from cards import Card, Suit, Rank
 from deck import Deck
 
 # The game class
 class Game:
     def __init__(self):
         # Games will default to having two players (for now)
+        self.current_player = 0
         # The deck at index 0 is the human's deck
         self.decks = [
             Deck([]),
@@ -44,23 +46,29 @@ class Game:
     def play_text(self):
         # Players take turns
         while not self.finished():
-            for player_id in range(len(self.decks)):
-                # Decide whether human or computer should play
-                if player_id == 0:
-                    self.player_turn(player_id)
-                else:
-                    self.computer_turn(player_id)
-                # Finish the game if there's a winner after this turn
-                if self.finished():
-                    break
+            # Decide whether human or computer should play
+            if self.current_player == 0:
+                could_play = self.player_turn()
+                # If this player could play a card, handle any special cards
+                if could_play:
+                    self.handle_special_card(self.discard.peek())
+            else:
+                could_play = self.computer_turn()
+                # If the computer could play a card, handle any special cards
+                if could_play:
+                    self.handle_special_card_computer(self.discard.peek())
+            # Increment to the next player
+            self.current_player = (self.current_player + 1) % len(self.decks)
+
         # Game over! Somebody won
         print(f"Player {self.winner_id() + 1} wins!")
 
     # Let a player take a turn
-    def player_turn(self, player_id: int):
-        player_deck = self.decks[player_id]
+    # Returns true if the player could go
+    def player_turn(self) -> bool:
+        player_deck = self.decks[self.current_player]
         # Display game state
-        print(f"Player {player_id + 1}'s turn")
+        print(f"Player {self.current_player + 1}'s turn")
         print(f"Your deck: {player_deck}")
         print(f"Top of discard: {self.discard.peek()}")
         # Get selection and ensure it is valid
@@ -83,14 +91,16 @@ class Game:
         # If the user entered a valid card to play
         if valid:
             # Remove card from deck and place on discard pile
-            choice = self.decks[player_id].remove(choice)
+            choice = self.decks[self.current_player].remove(choice)
             self.discard.push(choice)
             print()
+        return valid
 
     # Let the computer take a turn
-    def computer_turn(self, player_id: int):
-        player_deck = self.decks[player_id]
-        print(f"Computer player {player_id + 1}'s turn")
+    # Returns true if the computer could take a turn
+    def computer_turn(self) -> bool:
+        player_deck = self.decks[self.current_player]
+        print(f"Computer player {self.current_player + 1}'s turn")
         print(f"It's deck: {player_deck}")
         print(f"Top of discard: {self.discard.peek()}")
         # Get valid selection
@@ -103,6 +113,95 @@ class Game:
         else:
             # Valid card at play_this, play it
             print("Playing card...")
-            choice = self.decks[player_id].remove(play_this)
+            choice = self.decks[self.current_player].remove(play_this)
             self.discard.push(choice)
         print()
+        return play_this is not None
+
+    # Handle special cards
+    def handle_special_card(self, card: Card):
+        match card.rank:
+            case Rank.EIGHT:
+                # Handle 8 card
+                self.change_suit()
+            case Rank.TWO:
+                # Handle 2 card
+                self.pickup_2()
+            case Rank.ACE:
+                # Handle ace card
+                self.skip_go()
+            case Rank.JOKER:
+                # Handle joker card
+                self.skip_go()
+
+    # Handle special cards
+    def handle_special_card_computer(self, card: Card):
+        match card.rank:
+            case Rank.EIGHT:
+                # Handle 8 card
+                self.change_suit_computer()
+            case Rank.TWO:
+                # Handle 2 card
+                self.pickup_2()
+            case Rank.ACE:
+                # Handle ace card
+                self.skip_go()
+            case Rank.JOKER:
+                # Handle joker card
+                self.skip_go()
+
+    # Allow the player to change the suit
+    def change_suit(self):
+        # Find the suit the user wishes to set the game to
+        suit = None
+        while suit not in ["hearts", "diamonds", "clubs", "spades"]:
+            suit = input("Which suit do you wish to change it to (hearts/diamonds/clubs/spades): ")
+        print()
+        # Set the eight to that suit
+        match suit:
+            case "hearts":
+                self.discard.cards[len(self.discard.cards) - 1].suit = Suit.HEARTS
+            case "diamonds":
+                self.discard.cards[len(self.discard.cards) - 1].suit = Suit.DIAMONDS
+            case "clubs":
+                self.discard.cards[len(self.discard.cards) - 1].suit = Suit.CLUBS
+            case "spades":
+                self.discard.cards[len(self.discard.cards) - 1].suit = Suit.SPADES
+
+    # Allow the player to change the suit
+    def change_suit_computer(self):
+        # Strategy: select the suit which the computer has the most of
+        count = { "hearts": 0, "diamonds": 0, "clubs": 0, "spades": 0 }
+        for card in self.decks[self.current_player].cards:
+            match card.suit:
+                case Suit.HEARTS:
+                    count["hearts"] += 1
+                case Suit.DIAMONDS:
+                    count["diamonds"] += 1
+                case Suit.CLUBS:
+                    count["clubs"] += 1
+                case Suit.SPADES:
+                    count["spades"] += 1
+        choice = sorted(count.items(), key=lambda x: x[1], reverse=True)[0][0]
+        print(f"Computer changes suit to {choice}\n")
+        match choice:
+            case "hearts":
+                self.discard.cards[len(self.discard.cards) - 1].suit = Suit.HEARTS
+            case "diamonds":
+                self.discard.cards[len(self.discard.cards) - 1].suit = Suit.DIAMONDS
+            case "clubs":
+                self.discard.cards[len(self.discard.cards) - 1].suit = Suit.CLUBS
+            case "spades":
+                self.discard.cards[len(self.discard.cards) - 1].suit = Suit.SPADES
+
+    # Skip the next go of the player
+    def skip_go(self):
+        self.current_player = (self.current_player + 1) % len(self.decks)
+
+    # Make the next player pick up 2 cards
+    def pickup_2(self):
+        next_player_id = (self.current_player + 1) % len(self.decks)
+        player_deck = self.decks[next_player_id]
+        for i in range(2):
+            new_card = self.stock.pop()
+            player_deck.push(new_card)
