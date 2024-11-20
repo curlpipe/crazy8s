@@ -7,7 +7,11 @@
     - [X] Support special cards
     - [X] Move discard to stock if stock is empty
 - [ ] GUI
-    - [ ] Render the stock and discard piles
-    - [ ] Render our hand that we have
+    - [X] Render the stock and discard piles
+    - [X] Render our hand that we have
+    - [X] Implement very basic game play
+    - [ ] Allow for special cards
+    - [ ] Better opponent card selection
     - [ ] Start page that lets you add or remove jokers from the deck
     - [ ] Animations / Nicer visuals
+- [ ] More detailed README

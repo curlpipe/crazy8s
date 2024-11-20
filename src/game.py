@@ -61,8 +61,7 @@ class Game:
                 # If the computer could play a card, handle any special cards
                 if could_play:
                     self.handle_special_card_computer(self.discard.peek())
-            # Increment to the next player
-            self.current_player = (self.current_player + 1) % len(self.decks)
+            self.next_player()
 
         # Game over! Somebody won
         print(f"Player {self.winner_id() + 1} wins!")
@@ -200,7 +199,7 @@ class Game:
 
     # Skip the next go of the player
     def skip_go(self):
-        self.current_player = (self.current_player + 1) % len(self.decks)
+        self.next_player()
 
     # Make the next player pick up 2 cards
     def pickup_2(self):
@@ -209,3 +208,7 @@ class Game:
         for i in range(2):
             new_card = self.stock.pop()
             player_deck.push(new_card)
+
+    # Move to the next player
+    def next_player(self):
+        self.current_player = (self.current_player + 1) % len(self.decks)

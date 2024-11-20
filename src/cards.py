@@ -38,7 +38,7 @@ class Card:
         self.rank = rank
 
     # Method to get the svg data representing this card
-    def get_image(self) -> str:
+    def get_image_path(self) -> str:
         # Calculate the suit component
         match self.suit:
             case Suit.HEARTS:
@@ -72,7 +72,7 @@ class Card:
             case Rank.NINE:
                 rank = "9"
             case Rank.TEN:
-                rank = "10"
+                rank = "T"
             case Rank.JACK:
                 rank = "J"
             case Rank.QUEEN:
@@ -83,9 +83,13 @@ class Card:
                 rank = "1"
         
         # Build the path
-        path = f"assets/{rank}{suit}.svg"
+        path = f"assets/{rank}{suit}"
         if "src" in os.getcwd():
             path = "../" + path
+        return path
+
+    def get_image(self) -> str:
+        path = self.get_image_path() + ".svg"
         # Read the data from the svg
         f = open(path, "r")
         data = f.read()
