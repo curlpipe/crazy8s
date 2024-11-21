@@ -2,13 +2,12 @@
 For handling the UI of the game
 """
 
-from tkinter import *
+import random
+import os
+from tkinter import Tk, Label, Button, mainloop
 from PIL import Image, ImageTk
 from cards import Card, Suit, Rank
 from game import Game
-import random
-import time
-import os
 
 # UI class
 class UI:
@@ -29,13 +28,32 @@ class UI:
         self.paused = False
 
         # Show exit and new game buttons
-        self.exit_button = Button(self.root, text="Exit", command=self.quit, font=("Verdana", 12), width=5)
+        self.exit_button = Button(
+            self.root,
+            text="Exit",
+            command=self.quit,
+            font=("Verdana", 12),
+            width=5
+        )
         self.exit_button.place(relx=0.01, rely=0.01)
-        self.new_game_button = Button(self.root, text="New\nGame", command=self.new_game, font=("Verdana", 12), width=5)
+        self.new_game_button = Button(
+            self.root,
+            text="New\nGame",
+            command=self.new_game,
+            font=("Verdana", 12),
+            width=5
+        )
         self.new_game_button.place(relx=0.01, rely=0.07)
-        
+
         # Show game state
-        self.state = Label(self.root, text=f"Your Turn!", fg="white", bg="#033500", font=("Verdana", 20), pady=10)
+        self.state = Label(
+            self.root,
+            text="Your Turn!",
+            fg="white",
+            bg="#033500",
+            font=("Verdana", 20),
+            pady=10
+        )
         self.state.pack(side="bottom")
 
         # Render discard and stock piles
@@ -54,7 +72,8 @@ class UI:
         # Load in images of suits (for suit picker)
         self.suits = {}
         for suit in ["heart", "diamond", "spade", "club"]:
-            if "src" in os.getcwd(): path = f"../assets/{suit}.png"
+            if "src" in os.getcwd():
+                path = f"../assets/{suit}.png"
             else: path = f"assets/{suit}.png"
             image = Image.open(path)
             image = image.resize((30, 30))
@@ -99,8 +118,10 @@ class UI:
     # Render the discard pile
     def render_discard(self):
         # Destroy the discard pile if possible
-        try: self.discard_pile.destroy()
-        except: pass
+        try:
+            self.discard_pile.destroy()
+        except:
+            pass
         # Show the discard pile
         self.discard_pile = self.show_card(self.game.discard.peek(), 0.3333, 0.4)
 
@@ -111,7 +132,9 @@ class UI:
             image.destroy()
         # Render the updated deck
         card_number = len(self.game.decks[1].cards)
-        if card_number == 0: return # Prevent 0 division
+        if card_number == 0:
+            # Prevent 0 division
+            return
         increment = 0.7 / card_number
         self.opponent = []
         for i in range(card_number):
@@ -124,7 +147,9 @@ class UI:
             image.destroy()
         # Render the updated deck
         card_number = len(self.game.decks[0].cards)
-        if card_number == 0: return # Prevent 0 division
+        if card_number == 0:
+            # Prevent 0 division
+            return
         increment = 0.7 / card_number
         self.players = []
         for i, card in enumerate(self.game.decks[0].cards):
@@ -133,7 +158,7 @@ class UI:
             self.players.append(card)
 
     # Handle the player wanting to pick up a card
-    def pick_up(self, event):
+    def pick_up(self, _):
         if self.game.current_player == 0:
             player_deck = self.game.decks[self.game.current_player]
             new_card = self.game.stock.pop()
@@ -142,7 +167,7 @@ class UI:
             self.next_player()
 
     # Handle the player playing a card
-    def play_card(self, event, choice):
+    def play_card(self, _, choice):
         if self.game.current_player == 0:
             self.just_restarted = False
             player_deck = self.game.decks[0]
@@ -157,7 +182,15 @@ class UI:
                 self.render_opponent()
                 if self.game.finished():
                     # Game over, player won!
-                    self.victory_message = Label(self.root, text="You Won!", font=("Verdana", 60), bg="#033500", fg="white", padx=1000, pady=1000)
+                    self.victory_message = Label(
+                        self.root,
+                        text="You Won!",
+                        font=("Verdana", 60),
+                        bg="#033500",
+                        fg="white",
+                        padx=1000,
+                        pady=1000
+                    )
                     self.victory_message.place(relx=0.5, rely=0.5, anchor="center")
                     self.exit_button.lift()
                     self.new_game_button.lift()
@@ -179,7 +212,8 @@ class UI:
             self.root.after(random.randint(2000, 3000), self.handle_computer)
         # Refill the stock pile (to prevent running out)
         top = self.game.discard.pop()
-        for card in self.game.discard.cards: self.game.stock.cards.insert(0, card)
+        for card in self.game.discard.cards:
+            self.game.stock.cards.insert(0, card)
         self.game.discard.cards = [top]
 
     # Handle the computer's turn
@@ -201,7 +235,15 @@ class UI:
         self.next_player()
         if self.game.finished():
             # Game over, computer won!
-            self.victory_message = Label(self.root, text="You Lost!", font=("Verdana", 60), bg="#033500", fg="white", padx=1000, pady=1000)
+            self.victory_message = Label(
+                self.root,
+                text="You Lost!",
+                font=("Verdana", 60),
+                bg="#033500",
+                fg="white",
+                padx=1000,
+                pady=1000
+            )
             self.victory_message.place(relx=0.5, rely=0.5, anchor="center")
             self.exit_button.lift()
             self.new_game_button.lift()
@@ -235,15 +277,27 @@ class UI:
         self.club_button.place(relx=0.45, rely=0.9, anchor="center")
         self.diamond_button.place(relx=0.55, rely=0.9, anchor="center")
         self.spade_button.place(relx=0.65, rely=0.9, anchor="center")
-        self.heart_button.bind("<Button-1>", lambda event: self.do_suit_selection(event, Suit.HEARTS))
-        self.club_button.bind("<Button-1>", lambda event: self.do_suit_selection(event, Suit.CLUBS))
-        self.diamond_button.bind("<Button-1>", lambda event: self.do_suit_selection(event, Suit.DIAMONDS))
-        self.spade_button.bind("<Button-1>", lambda event: self.do_suit_selection(event, Suit.SPADES))
+        self.heart_button.bind(
+            "<Button-1>",
+            lambda event: self.do_suit_selection(event, Suit.HEARTS)
+        )
+        self.club_button.bind(
+            "<Button-1>",
+            lambda event: self.do_suit_selection(event, Suit.CLUBS)
+        )
+        self.diamond_button.bind(
+            "<Button-1>",
+            lambda event: self.do_suit_selection(event, Suit.DIAMONDS)
+        )
+        self.spade_button.bind(
+            "<Button-1>",
+            lambda event: self.do_suit_selection(event, Suit.SPADES)
+        )
         # Display message to player to pick a suit
         self.state.config(text="Choose a suit")
 
     # Make a suit selection
-    def do_suit_selection(self, event, suit: Suit):
+    def do_suit_selection(self, _, suit: Suit):
         self.state.config(text="Computer's Turn")
         # Set the suit
         self.game.discard.cards[len(self.game.discard.cards) - 1].suit = suit
@@ -291,12 +345,30 @@ def ask_user_if_jokers(yes_jokers, no_jokers):
         else:
             no_jokers()
 
-    question = Label(root, text="Welcome to the Crazy Eights card game\nDo you want to add jokers to the pack?", bg="#033500", fg="white", font=("Verdana", 30))
+    question = Label(
+        root,
+        text="Welcome to the Crazy Eights card game\nDo you want to add jokers to the pack?",
+        bg="#033500",
+        fg="white",
+        font=("Verdana", 30)
+    )
     question.pack()
 
-    positive = Button(root, text="Yes, add in jokers", pady=10, command=lambda: handle_event(True), font=("Verdana", 20))
+    positive = Button(
+        root,
+        text="Yes, add in jokers",
+        pady=10,
+        command=lambda: handle_event(True),
+        font=("Verdana", 20)
+    )
     positive.pack()
-    negative = Button(root, text="No, do not add in jokers", pady=10, command=lambda: handle_event(False), font=("Verdana", 20))
+    negative = Button(
+        root,
+        text="No, do not add in jokers",
+        pady=10,
+        command=lambda: handle_event(False),
+        font=("Verdana", 20)
+    )
     negative.pack()
 
     root.mainloop()

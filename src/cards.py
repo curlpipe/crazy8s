@@ -81,7 +81,7 @@ class Card:
                 rank = "K"
             case Rank.JOKER:
                 rank = "1"
-        
+
         # Build the path
         path = f"assets/{rank}{suit}"
         if "src" in os.getcwd():
@@ -91,9 +91,9 @@ class Card:
     def get_image(self) -> str:
         path = self.get_image_path() + ".svg"
         # Read the data from the svg
-        f = open(path, "r")
-        data = f.read()
-        f.close()
+        with open(path, "r", encoding="utf-8") as f:
+            data = f.read()
+            f.close()
         # Return the data
         return data
 
@@ -104,4 +104,3 @@ class Card:
     # Allow comparison of cards
     def __eq__(self, other):
         return self.rank == other.rank and self.suit == other.suit
-            

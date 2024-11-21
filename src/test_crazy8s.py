@@ -16,7 +16,7 @@ def test_cards():
     path = "assets/AD.svg"
     if "src" in os.getcwd():
         path = "../" + path
-    f = open(path, "r")
+    f = open(path, "r", encoding="utf-8")
     data = f.read()
     f.close()
     assert card.get_image() == data
@@ -24,7 +24,7 @@ def test_cards():
     path = "assets/1J.svg"
     if "src" in os.getcwd():
         path = "../" + path
-    f = open(path, "r")
+    f = open(path, "r", encoding="utf-8")
     data = f.read()
     f.close()
     assert card.get_image() == data
