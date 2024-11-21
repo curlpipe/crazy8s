@@ -56,7 +56,7 @@ Once the card is placed, the player finishes their turn.
 There are several cards that exhibit specific behaviour, these are as follows:
 
 - 8 cards allow the player to change the current suit (e.g. if you were to play an 8, and change the suit to clubs, the players after you must now play a card that matches that suit)
-- 2 cards make the next player pick up 2 cards and miss their go
+- 2 cards make the next player pick up two cards from the stock pile and miss their go
 - Joker and Ace cards make the next player miss their go
 
 ### Objective
