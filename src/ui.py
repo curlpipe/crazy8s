@@ -160,6 +160,7 @@ class UI:
     # Handle the player wanting to pick up a card
     def pick_up(self, _):
         if self.game.current_player == 0:
+            self.just_restarted = False
             player_deck = self.game.decks[self.game.current_player]
             new_card = self.game.stock.pop()
             player_deck.push(new_card)
