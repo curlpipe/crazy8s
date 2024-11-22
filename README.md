@@ -22,6 +22,8 @@ python -m pip install -r requirements.txt
 
 this will install all dependencies required.
 
+After installation, you can run the `main.py` file in the folder `src`.
+
 ## Rules
 
 ### Setting Up
