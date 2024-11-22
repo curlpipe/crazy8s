@@ -8,7 +8,7 @@ You will play against the computer in an attempt to try and win the game.
 
 This game has automated tests, install and run `pytest` to ensure everything is working as intended
 
-More information: [here](https://en.wikipedia.org/wiki/Crazy_Eights), note that my implementation is a slight variation on the original, but similar nonetheless.
+More information: [here](https://en.wikipedia.org/wiki/Crazy_Eights), note that my implementation is a slight variation on the original to allow for jokers, but similar nonetheless.
 
 ## Installation
 
@@ -62,6 +62,20 @@ There are several cards that exhibit specific behaviour, these are as follows:
 ### Objective
 
 The player who wins is the one who is first to get rid of their cards.
+
+## Implementation
+
+### Decisions
+
+- I used python for simplicity
+- I used tkinter for simplicity and easy installation (it almost always comes pre-packaged with python installations)
+- I wrote tests to ensure that core gameplay wasn't modified or broken during subsequent updates and verify that the card game works
+
+### Ideas for improvement
+
+- Adding more players to games e.g. 4 players
+- Allowing more configuration such as how many starting cards
+- Adding in cards that change the direction of play, e.g. Jacks
 
 ## Credits
 
